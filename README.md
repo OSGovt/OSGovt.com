@@ -1,4 +1,4 @@
-# osgovt.com
+# OSGovt.com
 
 The project home page for **OSGovt (Open County Portal)**: what the software
 does, pages for officials, IT staff and open-data users, and links to the
