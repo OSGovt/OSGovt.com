@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OSGovt · Free, open-source website for counties, cities and special districts</title>
+<meta name="description" content="Open County Portal is free, open-source government website software: property records search, online payments, a counter point of sale, meetings and notices, forms, and a free open API. Built to meet WCAG 2.1 AA. No license fees.">
+<link rel="canonical" href="https://osgovt.com/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/styles.css">
+<meta property="og:title" content="OSGovt · Free, open-source website for counties, cities and special districts">
+<meta property="og:description" content="Open County Portal is free, open-source government website software: property records search, online payments, a counter point of sale, meetings and notices, forms, and a free open API. Built to meet WCAG 2.1 AA. No license fees.">
+<meta property="og:url" content="https://osgovt.com/">
+<meta property="og:type" content="website">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Open County Portal","alternateName":"OSGovt","applicationCategory":"GovernmentApplication","operatingSystem":"Linux (Ubuntu 24.04 LTS)","softwareVersion":"1.0.0","license":"https://www.gnu.org/licenses/agpl-3.0.html","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://osgovt.com/","downloadUrl":"https://github.com/OSGovt/open-county-portal","softwareHelp":"https://github.com/OSGovt/open-county-portal/tree/main/docs","publisher":{"@type":"Organization","name":"OSCivic","url":"https://oscivic.com/"},"description":"Free, open-source website for counties, cities and special districts: records search, online payments, counter point of sale, meetings and notices, and a free open API. Built to meet WCAG 2.1 AA."}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="wordmark" href="/" aria-label="OSGovt home"><span aria-hidden="true">OS</span>Govt</a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="/for-officials/">For officials</a></li>
+        <li><a href="/for-it/">For IT</a></li>
+        <li><a href="/open-data/">Open data</a></li>
+        <li><a href="https://utopia.osgovt.com">Demo</a></li>
+        <li><a href="https://github.com/OSGovt/open-county-portal">Source</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero">
+    <div class="wrap">
+      <h1>A free, open-source website for counties, cities and special districts</h1>
+      <p class="lead">Open County Portal gives a local government a complete public website: services and offices, meetings and notices, property records search with free copies, online payments, a counter point of sale for cashiers, online forms, public information requests, and a free open API for all public data. No license fee, ever. Yours to run.</p>
+      <ul class="links">
+        <li><a href="https://utopia.osgovt.com">Try the demo county</a></li>
+        <li><a href="/for-officials/">What it means for your county</a></li>
+        <li><a href="/for-it/">How to install it</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="wrap section" aria-labelledby="does-title">
+    <h2 id="does-title">What it does</h2>
+    <div class="cards">
+      <article class="card" aria-labelledby="res-title">
+        <h3 id="res-title">For residents</h3>
+        <ul>
+          <li>Services, offices, hours and contacts, in plain language</li>
+          <li>Meetings, agendas and minutes; public notices</li>
+          <li>Property records search, page images, free uncertified copies, and certified copies with an online verification code</li>
+          <li>Pay property tax, court costs, utility bills and fees, in full or in part</li>
+          <li>Online forms and public information requests</li>
+        </ul>
+      </article>
+      <article class="card" aria-labelledby="staff-title">
+        <h3 id="staff-title">For staff</h3>
+        <ul>
+          <li>A staff console with two-step sign-in and roles</li>
+          <li>Counter point of sale: drawers, cash, check, card, escrow, close-out, supervisor voids</li>
+          <li>Finance reports and exports for the general ledger</li>
+          <li>Records administration: index corrections, restriction, redaction drawn on the page, a Social Security number scan</li>
+          <li>Content editing, required-postings tracking, a go-live checklist, an audit log</li>
+        </ul>
+      </article>
+      <article class="card" aria-labelledby="admin-title">
+        <h3 id="admin-title">For administrators</h3>
+        <ul>
+          <li>A one-command installer and a <code>countyctl</code> command for status, backups, restore and updates that undo themselves if anything fails</li>
+          <li>A migration toolkit for records, bills and the old website, with dry runs and undo</li>
+          <li>State packs that set up a state's offices, fees, required postings and records rules (Texas included)</li>
+          <li>A theme editor that won't publish colors that fail contrast</li>
+        </ul>
+      </article>
+      <article class="card" aria-labelledby="all-title">
+        <h3 id="all-title">For everyone</h3>
+        <ul>
+          <li>Open API at <code>/api/v1</code>, daily bulk files, a change feed, and DCAT-US catalogs that Data.gov harvests</li>
+          <li>Every page built to meet WCAG 2.1 AA, working on any phone, with or without JavaScript</li>
+          <li>A conformance suite that checks any running portal for accessibility, API and catalog problems</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="section band" aria-labelledby="try-title">
+    <div class="wrap">
+      <h2 id="try-title">Run it locally in three commands</h2>
+      <p>You need Docker. The first run builds the portal (5 to 10 minutes) and generates a fictional county to explore.</p>
+      <pre><code>git clone https://github.com/OSGovt/open-county-portal.git
+cd open-county-portal
+./deploy/local/start.sh</code></pre>
+      <p>Then open <code>http://localhost:8080</code>. The <a href="https://github.com/OSGovt/open-county-portal#readme">README</a> has the Windows steps and how to erase it.</p>
+    </div>
+  </section>
+
+  <section class="wrap section" aria-labelledby="who-title">
+    <h2 id="who-title">Who it's for</h2>
+    <dl class="principles">
+      <div><dt><a href="/for-officials/">Elected officials and department heads</a></dt><dd>What it costs, what happens to what you have now, who controls it, and the decisions that are yours.</dd></div>
+      <div><dt><a href="/for-it/">IT staff and implementers</a></dt><dd>Server size, a 30-minute install, backups, updates, migration, and the conformance suite.</dd></div>
+      <div><dt><a href="/open-data/">Developers and open-data people</a></dt><dd>The same free API, bulk files and DCAT-US catalog on every installation.</dd></div>
+      <div><dt><a href="https://github.com/OSGovt/open-county-portal/blob/main/docs/staff/README.md">Clerks, cashiers and content editors</a></dt><dd>The staff guide: records, the counter, payments and pages.</dd></div>
+    </dl>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>OSGovt is a project of <a href="https://oscivic.com">OSCivic</a>. Open County Portal is free software under the GNU AGPL. Questions: <a href="mailto:hello@osgovt.com">hello@osgovt.com</a>. <a href="https://github.com/OSGovt/osgovt.com">This site's source</a>.</p>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,86 @@
+# Walks through the live osgovt.com after every deploy and once a night.
+# A failure opens a GitHub issue labeled live-check; the next pass closes it.
+name: Live check
+
+on:
+  workflow_run:
+    workflows: [Deploy]
+    types: [completed]
+    branches: [main]
+  schedule:
+    - cron: "17 6 * * *"   # 06:17 UTC = 1:17 AM Central, before the nightly repair run
+  workflow_dispatch:
+
+concurrency:
+  group: live-check
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  SITE_URL: https://osgovt.com
+
+jobs:
+  check:
+    if: >-
+      github.repository_owner == 'OSGovt' &&
+      (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install the checker
+        run: |
+          (cd checks && npm ci --no-audit --no-fund)
+          pip install -r checks/requirements.txt
+          python -m playwright install --with-deps chromium
+      - name: Walk through the site
+        id: journey
+        continue-on-error: true
+        run: python checks/journey.py --url "$SITE_URL" --summary journey.md
+      - name: Keep the report
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: live-check-report
+          path: journey.md
+          retention-days: 30
+      - name: Open, update or close the issue
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOURNEY: ${{ steps.journey.outcome }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          repo="$GITHUB_REPOSITORY"
+          existing="$(gh api "repos/$repo/issues?state=open&labels=live-check&per_page=1" --jq '.[0].number // empty')"
+          if [ "$JOURNEY" = "success" ]; then
+            if [ -n "$existing" ]; then
+              gh api "repos/$repo/issues/$existing/comments" -f body="Passing again: $RUN_URL" >/dev/null
+              gh api -X PATCH "repos/$repo/issues/$existing" -f state=closed >/dev/null
+            fi
+            exit 0
+          fi
+          { echo "The live check failed at $SITE_URL. Run: $RUN_URL"; echo; cat journey.md 2>/dev/null; } > body.md
+          if [ -n "$existing" ]; then
+            gh api "repos/$repo/issues/$existing/comments" -F body=@body.md >/dev/null
+          else
+            gh api "repos/$repo/labels" -f name=live-check -f color=d73a4a \
+              -f description="Opened by the live check" >/dev/null 2>&1 || true
+            gh api "repos/$repo/issues" -f title="Live check is failing" -F body=@body.md -f 'labels[]=live-check' >/dev/null
+          fi
+      - name: Fail the run if the walk-through failed
+        if: steps.journey.outcome != 'success'
+        run: |
+          echo "::error::The walk-through failed. See the live-check issue."
+          exit 1

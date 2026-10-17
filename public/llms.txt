@@ -1,0 +1,26 @@
+# OSGovt (Open County Portal)
+
+> Free, open-source website software for counties, cities and special districts: services and offices, meetings and notices, property records search with free copies, online payments, a counter point of sale, online forms, public information requests, and a free open API for all public data. Built to meet WCAG 2.1 AA. GNU AGPL-3.0; no license fees. Version 1.0.0.
+
+## Pages
+
+- [Home](https://osgovt.com/): what it does, run it locally in three commands
+- [For officials](https://osgovt.com/for-officials/): what it costs, what happens to what you have now, who controls it, decisions, timeline, procurement
+- [For IT and implementers](https://osgovt.com/for-it/): server size, install, backups, updates, migration, conformance suite
+- [Open data and API](https://osgovt.com/open-data/): the free API, bulk files and DCAT-US catalog every installation publishes
+
+## Try it
+
+- [Demo county (Utopia County, fictional)](https://utopia.osgovt.com), with its own guide at https://utopia.osgovt.com/llms.txt
+- Local copy: `git clone https://github.com/OSGovt/open-county-portal.git && cd open-county-portal && ./deploy/local/start.sh`
+
+## Source and documentation
+
+- Repository: https://github.com/OSGovt/open-county-portal
+- Documentation: https://github.com/OSGovt/open-county-portal/tree/main/docs (officials, staff, administrators, implementers, data, state packs)
+- Releases: https://github.com/OSGovt/open-county-portal/releases
+- Part of OSCivic: https://oscivic.com
+
+## Contact
+
+- hello@osgovt.com (general), security@osgovt.com (security reports, privately), accessibility@osgovt.com (barriers in the software)

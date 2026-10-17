@@ -1,0 +1,22 @@
+name: Problem with osgovt.com
+description: Something on the site is wrong, broken or hard to use.
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page
+      description: The address, for example https://osgovt.com/
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and assistive technology
+      placeholder: Safari on iPhone with VoiceOver

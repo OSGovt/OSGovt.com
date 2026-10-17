@@ -1,0 +1,7 @@
+{
+  "name": "osgovt-site-checks",
+  "private": true,
+  "description": "Pinned axe-core for the accessibility check. Install with: npm ci",
+  "license": "AGPL-3.0-or-later",
+  "dependencies": { "axe-core": "4.13.0" }
+}

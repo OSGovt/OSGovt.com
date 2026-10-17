@@ -1,0 +1,8 @@
+{
+  "name": "osgovt-site-deploy",
+  "private": true,
+  "description": "Deploys osgovt.com to Cloudflare",
+  "license": "AGPL-3.0-or-later",
+  "scripts": { "deploy": "wrangler deploy" },
+  "devDependencies": { "wrangler": "4.141.0" }
+}

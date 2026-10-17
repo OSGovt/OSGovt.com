@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Open data and API · OSGovt</title>
+<meta name="description" content="Every Open County Portal publishes the same free API, daily bulk files and DCAT-US catalog. No account, key, fee or contract. Code written for one county works for all of them.">
+<link rel="canonical" href="https://osgovt.com/open-data/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/styles.css">
+<meta property="og:title" content="Open data and API · OSGovt">
+<meta property="og:description" content="Every Open County Portal publishes the same free API, daily bulk files and DCAT-US catalog. No account, key, fee or contract. Code written for one county works for all of them.">
+<meta property="og:url" content="https://osgovt.com/open-data/">
+<meta property="og:type" content="website">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="wordmark" href="/" aria-label="OSGovt home"><span aria-hidden="true">OS</span>Govt</a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="/for-officials/">For officials</a></li>
+        <li><a href="/for-it/">For IT</a></li>
+        <li><a href="/open-data/">Open data</a></li>
+        <li><a href="https://utopia.osgovt.com">Demo</a></li>
+        <li><a href="https://github.com/OSGovt/open-county-portal">Source</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="wrap section">
+  <h1>Open data and API</h1>
+  <p class="lead">Every government running Open County Portal publishes the same free API, the same daily bulk files and the same catalog format. Code you write for one county works for all of them. No account, key, fee or contract is required.</p>
+
+  <h2>Where to start</h2>
+  <p>Replace <code>portal.example-county.gov</code> with the county's portal address. The demo county answers at <a href="https://utopia.osgovt.com/data">utopia.osgovt.com/data</a>.</p>
+  <table>
+    <thead><tr><th scope="col">What</th><th scope="col">Address</th></tr></thead>
+    <tbody>
+      <tr><td>API index</td><td><code>/api/v1</code></td></tr>
+      <tr><td>Full API reference (OpenAPI 3)</td><td><code>/api/v1/openapi.json</code></td></tr>
+      <tr><td>Daily bulk files</td><td><code>/api/v1/bulk</code></td></tr>
+      <tr><td>Change feed</td><td><code>/api/v1/changes?since=…</code></td></tr>
+      <tr><td>Data catalog (DCAT-US 3.0)</td><td><code>/data.json</code></td></tr>
+      <tr><td>Data catalog (DCAT-US 1.1)</td><td><code>/data-v1.1.json</code></td></tr>
+      <tr><td>Plain-language page</td><td><code>/data</code></td></tr>
+    </tbody>
+  </table>
+
+  <h2>What's in it</h2>
+  <ul>
+    <li>Recorded documents (deeds, liens, plats) with page images, image checksums and machine-read text</li>
+    <li>Meetings with agendas and minutes; public notices</li>
+    <li>Current and scheduled fees with their legal authority</li>
+    <li>Services, offices with hours and contacts, published information pages</li>
+    <li>Released public information responses</li>
+    <li>Everything created, changed or removed since a time, for anyone keeping a copy</li>
+  </ul>
+  <p>All endpoints are <code>GET</code>, return JSON, and allow cross-origin requests from any website. The OpenAPI document is generated from the running code, so it's always exact for that portal's version.</p>
+
+  <h2>Data.gov</h2>
+  <p>The DCAT-US catalog is what Data.gov harvests, so a county's open data is listed nationally without extra work. The <a href="https://github.com/OSGovt/open-county-portal/blob/main/docs/admin/data-gov.md">administrator guide</a> covers submitting the catalog.</p>
+
+  <h2>Next</h2>
+  <ul class="links">
+    <li><a href="https://github.com/OSGovt/open-county-portal/blob/main/docs/data/README.md">The full guide to using the data</a>, with endpoint parameters and list shapes</li>
+    <li><a href="https://utopia.osgovt.com/api/v1/openapi.json">The demo county's OpenAPI document</a></li>
+  </ul>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>OSGovt is a project of <a href="https://oscivic.com">OSCivic</a>. Open County Portal is free software under the GNU AGPL. Questions: <a href="mailto:hello@osgovt.com">hello@osgovt.com</a>. <a href="https://github.com/OSGovt/osgovt.com">This site's source</a>.</p>
+  </div>
+</footer>
+</body>
+</html>

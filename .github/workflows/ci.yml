@@ -1,0 +1,37 @@
+# Checks the site on every push: serves it locally with Cloudflare's own dev
+# server and runs the same walk-through the live check uses.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: |
+          (cd deploy/cloudflare && npm ci --no-audit --no-fund)
+          (cd checks && npm ci --no-audit --no-fund)
+          pip install -r checks/requirements.txt
+          python -m playwright install --with-deps chromium
+      - name: Check the Worker
+        run: node --check deploy/cloudflare/worker.js
+      - name: Walk through a local copy
+        run: |
+          cd deploy/cloudflare
+          npx wrangler dev --ip 127.0.0.1 --port 8787 --var SITE_URL:https://local.invalid > ../../wrangler-dev.log 2>&1 &
+          cd ../..
+          python checks/journey.py --url http://127.0.0.1:8787 --wait 90 || { cat wrangler-dev.log; exit 1; }

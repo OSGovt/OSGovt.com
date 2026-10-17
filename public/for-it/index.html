@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>For IT and implementers · OSGovt</title>
+<meta name="description" content="Install Open County Portal: one Ubuntu 24.04 server, a 30-minute installer, countyctl for status, backups, restore and updates with automatic rollback, a migration toolkit, and a conformance suite. For county IT staff and independent implementers.">
+<link rel="canonical" href="https://osgovt.com/for-it/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/styles.css">
+<meta property="og:title" content="For IT and implementers · OSGovt">
+<meta property="og:description" content="Install Open County Portal: one Ubuntu 24.04 server, a 30-minute installer, countyctl for status, backups, restore and updates with automatic rollback, a migration toolkit, and a conformance suite. For county IT staff and independent implementers.">
+<meta property="og:url" content="https://osgovt.com/for-it/">
+<meta property="og:type" content="website">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="wordmark" href="/" aria-label="OSGovt home"><span aria-hidden="true">OS</span>Govt</a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="/for-officials/">For officials</a></li>
+        <li><a href="/for-it/">For IT</a></li>
+        <li><a href="/open-data/">Open data</a></li>
+        <li><a href="https://utopia.osgovt.com">Demo</a></li>
+        <li><a href="https://github.com/OSGovt/open-county-portal">Source</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="wrap section">
+  <h1>For IT staff and implementers</h1>
+  <p class="lead">One server runs everything. The installer takes about 30 minutes and asks six questions; <code>countyctl</code> handles the rest. This page is the short version of the <a href="https://github.com/OSGovt/open-county-portal/blob/main/docs/admin/README.md">administrator guide</a>.</p>
+
+  <h2>Server size</h2>
+  <table>
+    <thead><tr><th scope="col"></th><th scope="col">Minimum</th><th scope="col">Recommended</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Operating system</th><td>Ubuntu 22.04 LTS or Debian 12</td><td>Ubuntu 24.04 LTS</td></tr>
+      <tr><th scope="row">Processors</th><td>2</td><td>4</td></tr>
+      <tr><th scope="row">Memory</th><td>4 GB</td><td>8 GB (16 GB above about 5 million record pages)</td></tr>
+      <tr><th scope="row">Disk for the system</th><td>20 GB</td><td>40 GB</td></tr>
+      <tr><th scope="row">Disk for data</th><td colspan="2">Depends on record images; the <a href="https://github.com/OSGovt/open-county-portal/blob/main/docs/admin/sizing.md">sizing guide</a> shows how to estimate from a sample of your own scans</td></tr>
+    </tbody>
+  </table>
+  <p>A virtual machine is fine, on your own hardware or in a cloud. The portal needs ports 80 and 443 to itself.</p>
+
+  <h2>Install</h2>
+  <p>On a fresh Ubuntu 24.04 server you can SSH to with <code>sudo</code>, the <a href="https://github.com/OSGovt/open-county-portal/blob/main/docs/admin/install.md">install guide</a> walks through: update the OS, install git, clone the repository, run <code>deploy/install.sh</code>. It asks six questions (the government's name and type, the state, the web address, the certificate type, and the first administrator), installs Docker, builds and starts the portal, takes the first backup and prints the administrator's sign-in. Running it again is safe. A free automatic HTTPS certificate is issued when the address points at the server and ports 80 and 443 are open.</p>
+  <p>Want to see it first? <a href="/#try-title">Run a local copy in three commands</a> with Docker, or <a href="https://utopia.osgovt.com">use the hosted demo county</a>.</p>
+
+  <h2>Operate</h2>
+  <ul>
+    <li><strong>Backups.</strong> Every night the server copies the database, snapshots images and uploads, and copies the backup off the server if you've set that up. The last 14 nightly backups are kept; labeled backups (before an update, a restore, or by hand) for 60 days.</li>
+    <li><strong>Updates.</strong> A backup is taken first, and if the new version doesn't start properly, the old one comes back on its own with your data as it was. Versions follow semantic versioning; 1.x updates never require manual steps.</li>
+    <li><strong>Migration.</strong> A toolkit for records, bills and the old website, with dry runs, verification, sign-off and undo for every import.</li>
+    <li><strong>Payments.</strong> Processor adapters (Stripe Checkout, pay-at-office, and a test processor for training); new adapters are contributed back to the project.</li>
+    <li><strong>Conformance.</strong> Run the same suite the project runs on every pull request against your own installation: axe-core WCAG 2.1 A/AA checks on every public page at desktop and 320-pixel phone widths, the API contract, and the data catalog.</li>
+  </ul>
+
+  <h2>Implementers</h2>
+  <p>Most of the more than 3,000 counties and about 40,000 special districts in the United States can't spare a developer. Independent IT consultants, small firms, regional councils of government and state associations install and look after the portal for them, and may charge for it. The <a href="https://github.com/OSGovt/open-county-portal/blob/main/docs/implementers/README.md">implementer guide</a> sets the ground rules: the county owns everything, fixes are contributed back, no lock-in by any means, and nothing is handed over that fails the conformance suite.</p>
+
+  <h2>Next</h2>
+  <ul class="links">
+    <li><a href="https://github.com/OSGovt/open-county-portal/blob/main/docs/admin/README.md">Administrator guide</a></li>
+    <li><a href="https://github.com/OSGovt/open-county-portal/blob/main/docs/implementers/README.md">Implementer guide</a></li>
+    <li><a href="https://github.com/OSGovt/open-county-portal/releases">Releases</a> and <a href="https://github.com/OSGovt/open-county-portal/blob/main/CHANGELOG.md">changelog</a></li>
+  </ul>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>OSGovt is a project of <a href="https://oscivic.com">OSCivic</a>. Open County Portal is free software under the GNU AGPL. Questions: <a href="mailto:hello@osgovt.com">hello@osgovt.com</a>. <a href="https://github.com/OSGovt/osgovt.com">This site's source</a>.</p>
+  </div>
+</footer>
+</body>
+</html>

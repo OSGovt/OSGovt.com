@@ -1,0 +1,61 @@
+# Deploys osgovt.com to Cloudflare after CI passes on main (or by hand), then
+# waits until the site answers. Needs the CLOUDFLARE_API_TOKEN and
+# CLOUDFLARE_ACCOUNT_ID secrets (organization or repository).
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    if: >-
+      github.repository_owner == 'OSGovt' &&
+      (github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: deploy/cloudflare/package-lock.json
+      - name: Install the deploy tool
+        working-directory: deploy/cloudflare
+        run: npm ci --no-audit --no-fund
+      - name: Deploy
+        working-directory: deploy/cloudflare
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::error::Add the CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID secrets."
+            exit 1
+          fi
+          npx wrangler deploy
+      - name: Check the site answers
+        run: |
+          url="$(grep -o '"SITE_URL": *"[^"]*"' deploy/cloudflare/wrangler.jsonc | sed 's/.*"\(https[^"]*\)"/\1/')"
+          for _ in $(seq 1 40); do
+            if curl -fsS --max-time 20 "$url/" >/dev/null 2>&1; then
+              echo "The site is up: $url"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::error::$url didn't answer. See Workers & Pages > osgovt-site in the Cloudflare dashboard."
+          exit 1

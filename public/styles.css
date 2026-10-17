@@ -1,0 +1,89 @@
+/* OSCivic site. System fonts only: fast, nothing to download, nothing tracked. */
+:root {
+  --navy: #0d3869;
+  --navy-dark: #092a4f;
+  --green: #1f6b2a;
+  --amber-bg: #fff4d6;
+  --amber-text: #6b4a00;
+  --text: #1c2430;
+  --muted: #4a5565;
+  --bg: #ffffff;
+  --band: #f2f5f9;
+  --border: #d5dce5;
+  --focus: #b8860b;
+  --radius: 10px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 18px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+a { color: var(--navy); text-underline-offset: 0.15em; }
+a:hover { text-decoration-thickness: 2px; }
+a, code { overflow-wrap: anywhere; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+h1, h2, h3 { line-height: 1.2; margin: 0 0 0.5em; }
+h1 { font-size: clamp(2rem, 1.5rem + 2.5vw, 3rem); font-weight: 800; }
+h2 { font-size: clamp(1.5rem, 1.3rem + 1vw, 2rem); }
+h3 { font-size: 1.35rem; margin: 0; }
+p { margin: 0 0 1em; }
+
+.wrap { width: 100%; max-width: 68rem; margin: 0 auto; padding: 0 1rem; }
+.section { padding-top: 3rem; padding-bottom: 3rem; }
+
+.skip-link { position: absolute; left: 0.5rem; top: -4rem; z-index: 10; padding: 0.6rem 1rem;
+  background: #fff; color: var(--navy); font-weight: 700; border-radius: var(--radius); }
+.skip-link:focus { top: 0.5rem; }
+
+.site-header { background: var(--navy); color: #fff; }
+.site-header .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 0.5rem 1.5rem; padding-top: 0.9rem; padding-bottom: 0.9rem; }
+.wordmark { color: #fff; font-size: 1.5rem; font-weight: 800; text-decoration: none; letter-spacing: 0.01em; }
+.wordmark span { color: #9fd8a8; }
+.site-header nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; margin: 0; padding: 0; }
+.site-header nav a { color: #fff; display: inline-block; padding: 0.5rem 0; min-height: 44px; line-height: 28px; }
+
+.hero { background: var(--band); padding: 3.5rem 0 3rem; border-bottom: 1px solid var(--border); }
+.lead { font-size: 1.2rem; max-width: 46rem; color: var(--text); }
+
+.cards { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); }
+.card { border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; background: #fff; }
+.subtitle { color: var(--muted); margin: 0.15rem 0 0.9rem; font-weight: 600; }
+.status { display: inline-block; font-size: 0.85rem; font-weight: 700; padding: 0.15rem 0.6rem;
+  border-radius: 999px; margin-bottom: 0.75rem; }
+.status-available { background: #e3f2e6; color: var(--green); }
+.status-development { background: var(--amber-bg); color: var(--amber-text); }
+.links { list-style: none; padding: 0; margin: 0; }
+.links li { margin: 0.35rem 0; }
+.links a { font-weight: 600; display: inline-block; min-height: 44px; line-height: 44px; }
+.note { color: var(--muted); margin: 0; }
+
+.band { background: var(--band); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.principles { display: grid; gap: 1.25rem 2rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); margin: 0; }
+.principles dt { font-weight: 800; font-size: 1.1rem; margin-bottom: 0.3rem; }
+.principles dd { margin: 0; color: var(--text); }
+
+.contact { padding-left: 1.2rem; }
+.contact li { margin: 0.4rem 0; }
+
+.site-footer { background: var(--navy-dark); color: #fff; padding: 1.5rem 0; }
+.site-footer p { margin: 0; }
+.site-footer a { color: #fff; }
+
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+
+/* Content pages */
+table { border-collapse: collapse; width: 100%; margin: 0 0 1.5em; font-size: 0.95rem; }
+th, td { text-align: left; vertical-align: top; padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--border); overflow-wrap: anywhere; hyphens: auto; }
+@media (max-width: 30rem) { th, td { padding: 0.45rem 0.35rem; font-size: 0.9rem; } }
+th { font-weight: 700; }
+thead th { border-bottom: 2px solid var(--navy); }
+pre { background: var(--navy-dark); color: #fff; padding: 1rem 1.25rem; border-radius: var(--radius); margin: 0 0 1em;
+  white-space: pre-wrap; overflow-wrap: anywhere; }
+pre code { color: inherit; }
+code { font: 0.92em/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+main h2 { margin-top: 2rem; }
+main ul { padding-left: 1.3rem; }
+main li { margin: 0.3rem 0; }
+.principles dt a { font-weight: 800; }

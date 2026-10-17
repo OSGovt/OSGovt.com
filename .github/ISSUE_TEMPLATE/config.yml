@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Report a security problem
+    url: https://github.com/OSGovt/osgovt.com/security/advisories/new
+    about: Report privately. Never post security problems in a public issue.
+  - name: OSGovt (Open County Portal)
+    url: https://github.com/OSGovt/open-county-portal/issues/new/choose
+    about: Problems or requests for the county portal go to its own repository.
