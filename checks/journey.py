@@ -7,6 +7,7 @@
   accessibility no axe-core WCAG 2.1 A/AA violations on every page, at desktop and 320px phone width,
                 and no sideways scrolling on a phone
   tables        on 320px and 390px phones, no word in a table's label column is split across lines
+  names         every OS name in page text uses the OSNoun spelling (OSGovt.com, not osgovt.com)
   not-found     a missing page answers 404 with a way home
   addresses     (live site only) http:// and www. go to https://osgovt.com
   demo          (live site only) the demo county the pages link to is answering
@@ -162,13 +163,38 @@ def run(base: str, live: bool) -> None:
             page.set_viewport_size({"width": 1280, "height": 800})
             return not problems, "table labels keep whole words on 320px and 390px phones" if not problems else "; ".join(problems)
 
+        # Naming rule: every OS name is "OS" + a CamelCase noun, and that is how a domain or
+        # repository is written wherever people read it (OSGovt.com, OSCivic/OSCivic.com).
+        # Web addresses (https://osgovt.com, utopia.osgovt.com/data) and email addresses stay
+        # lowercase and are not checked.
+        OS_NAMES = """() => {
+            const canon = {osgovt: 'OSGovt', oscivic: 'OSCivic', osfairground: 'OSFairground',
+                           osfairgrounds: 'OSFairgrounds', osroster: 'OSRoster', osneighbors: 'OSNeighbors'};
+            const re = /(?<![\\w\\/@.:\\-])(osgovt|oscivic|osfairgrounds|osfairground|osroster|osneighbors)(?=\\.com(?![\\w\\/\\-]|\\.\\w)|(?![\\w.])|\\.(?!\\w))/gi;
+            const text = document.title + '\\n' + document.body.innerText;
+            const bad = [];
+            for (const m of text.matchAll(re)) {
+                if (m[0] !== canon[m[0].toLowerCase()]) bad.push(m[0]);
+            }
+            return bad;
+        }"""
+
+        def names():
+            problems = []
+            for path in ("/", *PAGES, "/no-such-page"):
+                page.goto(base + path)
+                bad = page.evaluate(OS_NAMES)
+                if bad:
+                    problems.append(f"{path} writes {', '.join(sorted(set(bad)))}")
+            return not problems, "every OS name uses the OSNoun spelling" if not problems else "; ".join(problems)
+
         def not_found():
             r = page.goto(base + "/no-such-page")
             ok = r is not None and r.status == 404 and page.get_by_role("link", name="Go to the OSGovt home page").count() == 1
             return ok, f"HTTP {r.status if r else '?'}"
 
         steps = [("home", home), ("pages", pages), ("machine", machine),
-                 ("accessibility", accessibility), ("tables", tables), ("not-found", not_found)]
+                 ("accessibility", accessibility), ("tables", tables), ("names", names), ("not-found", not_found)]
         for name, fn in steps:
             step(name, fn)
         browser.close()
