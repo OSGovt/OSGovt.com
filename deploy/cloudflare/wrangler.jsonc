@@ -1,4 +1,4 @@
-// osgovt.com on Cloudflare Workers with static assets (free).
+// OSGovt.com on Cloudflare Workers with static assets (free).
 // Deployed by .github/workflows/deploy.yml after CI passes on main.
 {
   "$schema": "node_modules/wrangler/config-schema.json",

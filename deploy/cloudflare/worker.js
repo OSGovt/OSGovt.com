@@ -1,4 +1,4 @@
-// osgovt.com: static files from ../../public, served by Cloudflare. This small
+// OSGovt.com: static files from ../../public, served by Cloudflare. This small
 // Worker runs first only to send http:// and www. visitors to https://osgovt.com.
 // Other hosts (local development) are served as they are.
 export default {

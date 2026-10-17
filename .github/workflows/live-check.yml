@@ -1,4 +1,4 @@
-# Walks through the live osgovt.com after every deploy and once a night.
+# Walks through the live OSGovt.com after every deploy and once a night.
 # A failure opens a GitHub issue labeled live-check; the next pass closes it.
 name: Live check
 

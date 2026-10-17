@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Walk through osgovt.com the way a visitor does. Exit 1 if any step fails.
+"""Walk through OSGovt.com the way a visitor does. Exit 1 if any step fails.
 
   home          the page loads with its title and heading, and links to the demo and source
   pages         For officials, For IT and Open data each load with their heading and a link back to the docs
   machine       robots.txt, sitemap.xml and llms.txt answer and agree with each other
   accessibility no axe-core WCAG 2.1 A/AA violations on every page, at desktop and 320px phone width,
                 and no sideways scrolling on a phone
+  tables        on 320px and 390px phones, no word in a table's label column is split across lines
   not-found     a missing page answers 404 with a way home
   addresses     (live site only) http:// and www. go to https://osgovt.com
   demo          (live site only) the demo county the pages link to is answering
@@ -25,7 +26,7 @@ from urllib.parse import urlparse
 
 import httpx
 
-UA = "OSGovt-LiveCheck/1.0 (+https://github.com/OSGovt/osgovt.com)"
+UA = "OSGovt-LiveCheck/1.0 (+https://github.com/OSGovt/OSGovt.com)"
 AXE = Path(__file__).resolve().parent / "node_modules" / "axe-core" / "axe.min.js"
 results: list[tuple[str, bool, str]] = []
 
@@ -129,13 +130,45 @@ def run(base: str, live: bool) -> None:
             page.set_viewport_size({"width": 1280, "height": 800})
             return not problems, "no WCAG 2.1 AA violations on any page; fits a 320px phone" if not problems else "; ".join(problems)
 
+        # Each word in a table's label column (the first cell of every row) must stay whole
+        # on one line on a phone: no "Ite/m" or "soft-/war/e".
+        SPLIT_WORDS = """() => {
+            const out = [];
+            for (const row of document.querySelectorAll('main table tr')) {
+                const cell = row.cells[0];
+                if (!cell) continue;
+                const walker = document.createTreeWalker(cell, NodeFilter.SHOW_TEXT);
+                for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+                    for (const m of node.data.matchAll(/[^\\s-]+/g)) {  // a break at a hyphen is fine
+                        const r = document.createRange();
+                        r.setStart(node, m.index); r.setEnd(node, m.index + m[0].length);
+                        const lines = new Set([...r.getClientRects()].map(q => Math.round(q.top)));
+                        if (lines.size > 1) out.push(m[0]);
+                    }
+                }
+            }
+            return out;
+        }"""
+
+        def tables():
+            problems = []
+            for width in (320, 390):
+                page.set_viewport_size({"width": width, "height": 800})
+                for path in PAGES:
+                    page.goto(base + path)
+                    split = page.evaluate(SPLIT_WORDS)
+                    if split:
+                        problems.append(f"{path} at {width}px splits {', '.join(sorted(set(split)))}")
+            page.set_viewport_size({"width": 1280, "height": 800})
+            return not problems, "table labels keep whole words on 320px and 390px phones" if not problems else "; ".join(problems)
+
         def not_found():
             r = page.goto(base + "/no-such-page")
             ok = r is not None and r.status == 404 and page.get_by_role("link", name="Go to the OSGovt home page").count() == 1
             return ok, f"HTTP {r.status if r else '?'}"
 
         steps = [("home", home), ("pages", pages), ("machine", machine),
-                 ("accessibility", accessibility), ("not-found", not_found)]
+                 ("accessibility", accessibility), ("tables", tables), ("not-found", not_found)]
         for name, fn in steps:
             step(name, fn)
         browser.close()
@@ -160,7 +193,7 @@ def run(base: str, live: bool) -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="Walk through osgovt.com the way a visitor does.")
+    ap = argparse.ArgumentParser(description="Walk through OSGovt.com the way a visitor does.")
     ap.add_argument("--url", required=True)
     ap.add_argument("--wait", type=int, default=120)
     ap.add_argument("--summary", help="Also write the results as a Markdown table to this file")

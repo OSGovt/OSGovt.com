@@ -1,4 +1,4 @@
-# Deploys osgovt.com to Cloudflare after CI passes on main (or by hand), then
+# Deploys OSGovt.com to Cloudflare after CI passes on main (or by hand), then
 # waits until the site answers. Needs the CLOUDFLARE_API_TOKEN and
 # CLOUDFLARE_ACCOUNT_ID secrets (organization or repository).
 name: Deploy

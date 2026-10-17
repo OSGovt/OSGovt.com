@@ -1,4 +1,4 @@
-name: Problem with osgovt.com
+name: Problem with OSGovt.com
 description: Something on the site is wrong, broken or hard to use.
 body:
   - type: input

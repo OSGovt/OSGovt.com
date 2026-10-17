@@ -75,8 +75,11 @@ p { margin: 0 0 1em; }
 
 /* Content pages */
 table { border-collapse: collapse; width: 100%; margin: 0 0 1.5em; font-size: 0.95rem; }
-th, td { text-align: left; vertical-align: top; padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--border); overflow-wrap: anywhere; hyphens: auto; }
-@media (max-width: 30rem) { th, td { padding: 0.45rem 0.35rem; font-size: 0.9rem; } }
+th, td { text-align: left; vertical-align: top; padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--border); overflow-wrap: anywhere; }
+/* The label column wraps only between words, so it is never squeezed to a letter or two;
+   the value column (which may hold long addresses) gives up the width instead. */
+tr > :first-child { overflow-wrap: normal; padding-left: 0; }
+@media (max-width: 30rem) { th, td { padding: 0.45rem 0.35rem; font-size: 0.9rem; } tr > :first-child { padding-left: 0; } }
 th { font-weight: 700; }
 thead th { border-bottom: 2px solid var(--navy); }
 pre { background: var(--navy-dark); color: #fff; padding: 1rem 1.25rem; border-radius: var(--radius); margin: 0 0 1em;
